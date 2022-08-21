@@ -3,3 +3,8 @@ server:
 logging:
   level:
     org.springframework: DEBUG #??? ??? ? ?? ?? log??
+
+
+spring:
+  messages:
+    basename: messages
