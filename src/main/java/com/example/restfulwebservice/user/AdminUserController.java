@@ -3,7 +3,6 @@ package com.example.restfulwebservice.user;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +36,10 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/v1/users/{id}") // v1
+    //@GetMapping("/v1/users/{id}") // v1
+    //@GetMapping(value = "/users/{id}", params ="version=1")
+   // @GetMapping(value = "/users/{id}", headers ="X-API-VERSION=1")
+    @GetMapping(value = "/v1/users/{id}",produces = "application/vnd.company.apply1+json")
     public MappingJacksonValue findUserV1(@PathVariable int id) {
         User user = service.findOne(id);
 
@@ -56,7 +58,10 @@ public class AdminUserController {
 
     }
 
-    @GetMapping("/v2/users/{id}")
+    //@GetMapping("/v2/users/{id}")
+    //@GetMapping(value = "/users/{id}", params ="version=2")
+    //@GetMapping(value = "/users/{id}", headers ="X-API-VERSION=2")
+    @GetMapping(value = "/v2/users/{id}",produces = "application/vnd.company.apply2+json")
     public MappingJacksonValue findUserV2(@PathVariable int id) {
         User user = service.findOne(id);
 
