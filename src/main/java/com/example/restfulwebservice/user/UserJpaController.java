@@ -16,6 +16,8 @@ import java.util.Optional;
 public class UserJpaController {
     private final UserRepo userRepo;
 
+    private final PostRepo postRepo;
+
     @GetMapping("/users")
     public List<User> findAllUsers() {
         return userRepo.findAll();
@@ -49,9 +51,28 @@ public class UserJpaController {
         return ResponseEntity.created(location).build();
 
     }
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<User> createPost(@PathVariable int id,@RequestBody Post post) {
+
+        Optional<User> user = userRepo.findById(id);
+
+        if (!user.isPresent()) {
+            throw new UserNotFoundException(String.format("ID[%s} not found", id));
+        }
+        post.setUser(user.get());
+        Post savedPost = postRepo.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedPost.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+
+    }
 
     @GetMapping("/users/{id}/posts")
-    public List<Post> findAllPostsByuSER(@PathVariable int id) {
+    public List<Post> findAllPostsByUser(@PathVariable int id) {
         Optional<User> user = userRepo.findById(id);
 
         if (!user.isPresent()) {
